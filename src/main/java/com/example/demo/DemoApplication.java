@@ -29,7 +29,7 @@ public class DemoApplication {
 	@GetMapping("/new")
 	public String Backend()
 	{
-		return "Welcome to Tweetsy Backend Spring";
+		return "Welcome to Tweetsy Backend Spring 1";
 	}
 
 	public static void main(String[] args) {
