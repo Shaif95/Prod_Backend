@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
@@ -23,6 +24,12 @@ public class DemoApplication {
 	public void init(){
 		// Setting Spring Boot SetTimeZone
 		TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+	}
+
+	@GetMapping("/new")
+	public String Backend()
+	{
+		return "Welcome to Tweetsy Backend Spring";
 	}
 
 	public static void main(String[] args) {

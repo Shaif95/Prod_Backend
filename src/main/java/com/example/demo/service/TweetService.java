@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 
@@ -87,6 +88,7 @@ public class TweetService {
 						.niche("advice1")
 						.RtCount(status.getRetweetCount())
 						.Fav_Count(status.getFavoriteCount())
+						.tweetedAt(status.getCreatedAt())
 						.build();
 
 				//System.out.println(status.getText());
@@ -125,7 +127,7 @@ public class TweetService {
 
 	public Map<String, Object> findTweetsWithStatus(String niche, int page, int size) {
 
-		Page<Tweet> tweets = tweetRepository.findByNiche(niche,PageRequest.of(page, size));
+		Page<Tweet> tweets = tweetRepository.findByNiche(niche,PageRequest.of(page, size), Sort.by("tweetedAt").ascending());
 		Map<String, Object> tweetsMap = new HashMap<>();
 
 		tweetsMap.put("tweets", tweets.getContent());
@@ -174,6 +176,7 @@ public class TweetService {
 							.niche("us_politics2")
 							.RtCount(status.getRetweetCount())
 							.Fav_Count(status.getFavoriteCount())
+							.tweetedAt(status.getCreatedAt())
 							.build();
 
 
@@ -230,6 +233,7 @@ public class TweetService {
 						.niche("Sabirtweets8")
 						.RtCount(status.getRetweetCount())
 						.Fav_Count(status.getFavoriteCount())
+						.tweetedAt(status.getCreatedAt())
 						.build();
 
 				//System.out.println(status.getText());

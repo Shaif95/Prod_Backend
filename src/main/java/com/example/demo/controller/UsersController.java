@@ -26,6 +26,12 @@ public class UsersController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("/new")
+    public String Backend()
+    {
+        return "Welcome to Tweetsy Backend Spring";
+    }
+
     @PostMapping
     public User addAward(@RequestBody User user) {
         return userService.add(user);

@@ -87,7 +87,7 @@ public class LoginService {
 
 
         Instant now = Instant.now();
-        Instant yesterday = now.minus(1, ChronoUnit.DAYS);
+        Instant yesterday = now.minus(2, ChronoUnit.DAYS);
         //System.out.println(now);
         String date = now.toString().substring(0,10);
 
@@ -101,7 +101,7 @@ public class LoginService {
             System.out.println(accounts[i]);
 
             Twitter twitter = twitterConfig.getTwitterInstance();
-            Query query = new Query("from:" + accounts[i]+ " +exclude:retweets"+ " +exclude:replies").since(date);
+            Query query = new Query("from:" + accounts[i]+ " +exclude:replies").since(date);
 
             query.setCount(1000);
 
