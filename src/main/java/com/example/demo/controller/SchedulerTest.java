@@ -57,52 +57,52 @@ public class SchedulerTest {
     // Scheduler
 
     @Scheduled(cron ="0 */1 * * * ?")
-   public void schl() throws TwitterException, ServletException, IOException, InterruptedException {
+    public void schl() throws TwitterException, ServletException, IOException, InterruptedException {
 
         System.out.println("HI......................................");
 
-       Instant now = Instant.now();
+        Instant now = Instant.now();
 
-       //System.out.println(now);
-       Instant min_1 = now.plus(1,ChronoUnit.MINUTES);
-       Instant min_2 = now.plus(2,ChronoUnit.MINUTES);
-       Instant min_3 = now.plus(3,ChronoUnit.MINUTES);
-       Instant min_4 = now.plus(4,ChronoUnit.MINUTES);
+        //System.out.println(now);
+        Instant min_1 = now.plus(1,ChronoUnit.MINUTES);
+        Instant min_2 = now.plus(2,ChronoUnit.MINUTES);
+        Instant min_3 = now.plus(3,ChronoUnit.MINUTES);
+        Instant min_4 = now.plus(4,ChronoUnit.MINUTES);
 
-       String date = now.toString().substring(2,19);
-       String date1 = min_1.toString().substring(2,19);
-       String date2 = min_2.toString().substring(2,19);
-       String date3 = min_3.toString().substring(2,19);
-       String date4 = min_4.toString().substring(2,19);
+        String date = now.toString().substring(2,19);
+        String date1 = min_1.toString().substring(2,19);
+        String date2 = min_2.toString().substring(2,19);
+        String date3 = min_3.toString().substring(2,19);
+        String date4 = min_4.toString().substring(2,19);
 
-       find(date,0);
+        find(date,0);
 
 
-       System.out.println(date);
-       //System.out.println(date1);
+        System.out.println(date);
+        //System.out.println(date1);
 
-       System.out.println("........................................");
+        System.out.println("........................................");
 
     }
 
     private void find(String date, Integer k) throws ServletException, IOException, TwitterException, InterruptedException {
 
-       List<TweetText> tweets = tweetTextRepository.findBydatetime(date,TweetStatus.PENDING);
+        List<TweetText> tweets = tweetTextRepository.findBydatetime(date,TweetStatus.PENDING);
 
-       System.out.println(tweets);
+        System.out.println(tweets);
 
-       for(int i =0; i<tweets.size();i++)
-       {
-           //Thread.sleep((k*1000*60));
+        for(int i =0; i<tweets.size();i++)
+        {
+            //Thread.sleep((k*1000*60));
 
-           TweetText t = tweets.get(i);
+            TweetText t = tweets.get(i);
 
-           userService.post(t.getUserid(),t.getText());
+            userService.post(t.getUserid(),t.getText());
 
-           t.setStatus(TweetStatus.SENT);
+            t.setStatus(TweetStatus.SENT);
 
-           TweetText t1 = tweetTextService.update(tweets.get(i).getId(),t);
-       }
+            TweetText t1 = tweetTextService.update(tweets.get(i).getId(),t);
+        }
 
     }
 
@@ -113,19 +113,19 @@ public class SchedulerTest {
 
         System.out.println("every hour");
 
-       List<loginuser> Allusers = new ArrayList<>();
+        List<loginuser> Allusers = new ArrayList<>();
 
-       Allusers = login_repository.findAll();
+        Allusers = login_repository.findAll();
 
-       for (int i = 0 ; i <Allusers.size(); i++)
-       {
-           loginuser lu = Allusers.get(i);
+        for (int i = 0 ; i <Allusers.size(); i++)
+        {
+            loginuser lu = Allusers.get(i);
 
-           if(lu.getFollowSet()!=null)
-           {
-               fetch(lu.getFollowSet(),lu.getId());
-           }
-       }
+            if(lu.getFollowSet()!=null)
+            {
+                fetch(lu.getFollowSet(),lu.getId());
+            }
+        }
 
 
         Instant now = Instant.now();

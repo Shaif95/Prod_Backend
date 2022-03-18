@@ -27,7 +27,7 @@ public class TweetController {
 
 
 	@GetMapping("/get_acc/{niche}")
-	public List<Tweet> fetchTweets(@PathVariable String niche) throws TwitterException {
+	public List<Tweet> fetchTweets(@PathVariable String niche) throws TwitterException, InterruptedException {
 		return tweetService.streamTweets(niche);
 	}
 
@@ -78,6 +78,7 @@ public class TweetController {
 	public Tweet changeCatById(@PathVariable String id, @PathVariable String cat) {
 		return tweetService.changeCatById(id,cat);
 	}
+
 
 
 }

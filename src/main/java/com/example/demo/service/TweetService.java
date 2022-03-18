@@ -52,7 +52,7 @@ public class TweetService {
 
 
 
-	public List<Tweet> streamTweets( String niche ) throws TwitterException {
+	public List<Tweet> streamTweets( String niche ) throws TwitterException, InterruptedException {
 
 		String[] accounts = {};
 
@@ -64,6 +64,7 @@ public class TweetService {
 		List<Tweet> tweets = new ArrayList<Tweet>();
 
 		for (int i =0;i<accounts.length;i++) {
+
 
 			System.out.println(accounts[i]);
 
@@ -85,7 +86,7 @@ public class TweetService {
 						.url_id(String.valueOf(status.getId()))
 						.user(status.getUser().getScreenName())
 						.userImage(status.getUser().getProfileImageURL())
-						.niche("advice1")
+						.niche("saas3")
 						.RtCount(status.getRetweetCount())
 						.Fav_Count(status.getFavoriteCount())
 						.tweetedAt(status.getCreatedAt())
@@ -94,10 +95,10 @@ public class TweetService {
 				//System.out.println(status.getText());
 
 
-				if (tweet.getRtCount() > 10000) {
+				if (tweet.getRtCount() > 5) {
 					tweets.add(tweet);
 				}
-				else if (tweet.getFav_Count() > 10000) {
+				else if (tweet.getFav_Count() > 5) {
 					tweets.add(tweet);
 				}
 
@@ -173,17 +174,17 @@ public class TweetService {
 							.url_id(String.valueOf(status.getId()))
 							.user(status.getUser().getScreenName())
 							.userImage(status.getUser().getProfileImageURL())
-							.niche("us_politics2")
+							.niche("coding3")
 							.RtCount(status.getRetweetCount())
 							.Fav_Count(status.getFavoriteCount())
 							.tweetedAt(status.getCreatedAt())
 							.build();
 
 
-					if (tweet.getRtCount() > 10000000) {
+					if (tweet.getRtCount() > 5) {
 						tweets.add(tweet);
 					}
-					else if (tweet.getFav_Count() > 100000) {
+					else if (tweet.getFav_Count() > 5) {
 						tweets.add(tweet);
 					}
 
@@ -202,51 +203,68 @@ public class TweetService {
 
 
 		Instant now = Instant.now();
-		Instant yesterday = now.minus(10, ChronoUnit.DAYS);
+		Instant yesterday = now.minus(100, ChronoUnit.DAYS);
 		//System.out.println(now);
 		String date = now.toString().substring(0,10);
 
-		String[] accounts = { "Sabirtweets8"};
+		List<Tweet> neededtweets = new ArrayList<Tweet>();
 
-		List<Tweet> tweets = new ArrayList<Tweet>();
+		Paging pg = new Paging();
+		//String userName = "Sabirtweets8";
 
-		for (int i =0;i<accounts.length;i++) {
+		String userName = "324342432fsdfhui78ds";
 
-			Twitter twitter = twitterConfig.getTwitterInstance();
-			Query query = new Query("from:" + accounts[i]);
-			QueryResult result = twitter.search(query);
+		Twitter twitter = twitterConfig.getTwitterInstance();
 
-
-			for (Status status : result.getTweets()) {
-
-				String te = status.getText();
-
-				Integer st = te.indexOf("@");
-
-				Integer end = te.indexOf(":");
-
-				Tweet tweet = Tweet.builder()
-						.text(te.substring(end,te.length()))
-						.url_id(String.valueOf(status.getId()))
-						.user(te.substring(st+1,end))
-						.userImage(status.getUser().getProfileImageURL())
-						.niche("Sabirtweets8")
-						.RtCount(status.getRetweetCount())
-						.Fav_Count(status.getFavoriteCount())
-						.tweetedAt(status.getCreatedAt())
-						.build();
-
-				//System.out.println(status.getText());
-
-				tweets.add(tweet);
-
-
-
+		int numberOfTweets = 110;
+		long lastID = Long.MAX_VALUE;
+		ArrayList<Status> tweets = new ArrayList<Status>();
+		while (tweets.size () < numberOfTweets) {
+			try {
+				tweets.addAll(twitter.getUserTimeline(userName,pg));
+				System.out.println("Gathered " + tweets.size() + " tweets");
+				for (Status t: tweets)
+					if(t.getId() < lastID) lastID = t.getId();
 			}
+			catch (TwitterException te) {
+			System.out.println("Error");
+			};
+			pg.setMaxId(lastID-1);
 		}
 
 
-		return tweetRepository.saveAll(tweets);
+			//query.setCount(50);
+
+			for (Status status : tweets) {
+
+				if(status.getText().startsWith("RT") == true ) {
+					String te = status.getText();
+
+					Integer st = te.indexOf("@");
+
+					Integer end = te.indexOf(":");
+
+					String username = te.substring(st + 1, end);
+
+					Tweet tweet = Tweet.builder()
+							.text(te.substring(end, te.length()))
+							.url_id(String.valueOf(status.getId()))
+							.user(username)
+							.userImage(getImageByUser(username))
+							.niche("handpicked")
+							.RtCount(status.getRetweetCount())
+							.Fav_Count(status.getFavoriteCount())
+							.tweetedAt(status.getCreatedAt())
+							.build();
+
+					//System.out.println(status.getText());
+
+					neededtweets.add(tweet);
+
+				}
+		}
+
+		return tweetRepository.saveAll(neededtweets);
 
 	}
 
@@ -281,5 +299,26 @@ public class TweetService {
 	public Tweet getById(String id) {
 		return tweetRepository.findById(id).get();
 	}
+
+	public String getImageByUser(String name ) throws TwitterException {
+
+		String image = "";
+
+		Twitter twitter = twitterConfig.getTwitterInstance();
+		Query query = new Query( "from:" + name + " +exclude:retweets" );
+		QueryResult result = twitter.search(query);
+		query.setCount(1);
+
+		for (Status status : result.getTweets()) {
+
+
+			image = status.getUser().getProfileImageURL();
+
+
+		}
+
+		return image;
+
+		}
 
 }
