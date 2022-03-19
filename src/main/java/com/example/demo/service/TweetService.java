@@ -83,6 +83,7 @@ public class TweetService {
 
 				Tweet tweet = Tweet.builder()
 						.text(status.getText())
+						.searchtext(status.getText())
 						.url_id(String.valueOf(status.getId()))
 						.user(status.getUser().getScreenName())
 						.userImage(status.getUser().getProfileImageURL())
@@ -171,6 +172,7 @@ public class TweetService {
 
 					Tweet tweet = Tweet.builder()
 							.text(status.getText())
+							.searchtext(status.getText())
 							.url_id(String.valueOf(status.getId()))
 							.user(status.getUser().getScreenName())
 							.userImage(status.getUser().getProfileImageURL())
@@ -248,6 +250,7 @@ public class TweetService {
 
 					Tweet tweet = Tweet.builder()
 							.text(te.substring(end, te.length()))
+							.searchtext(te.substring(end, te.length()))
 							.url_id(String.valueOf(status.getId()))
 							.user(username)
 							.userImage(getImageByUser(username))

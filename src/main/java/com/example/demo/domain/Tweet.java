@@ -22,6 +22,8 @@ public class Tweet {
 	private String id;
 	
 	private String text;
+
+	private String searchtext;
 	
 	private String user;
 
