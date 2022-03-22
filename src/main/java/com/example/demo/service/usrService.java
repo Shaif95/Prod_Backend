@@ -9,6 +9,7 @@ import com.example.demo.config.TwitterConfig;
 import com.example.demo.domain.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.utils.CustomBeanUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -160,6 +161,10 @@ public class usrService {
 
     public String reply(String id, String tweetid, String replyms) throws IOException, ServletException, TwitterException {
 
+        Map<String, Object> jsonToMap = new ObjectMapper().readValue(replyms, Map.class);
+
+        String rlp = (String) jsonToMap.get("reply");
+
         User user = userRepository.findById(id).get();
 
         RequestToken requestToken = null;
@@ -174,7 +179,7 @@ public class usrService {
         Twitter twitter = twitterFactory.getInstance();
 
  Status status = twitter.showStatus(Long.parseLong(tweetid));
- Status reply = twitter.updateStatus(new StatusUpdate(" @" + status.getUser().getScreenName() + " "+ replyms ).inReplyToStatusId(status.getId()));
+ Status reply = twitter.updateStatus(new StatusUpdate(" @" + status.getUser().getScreenName() + " "+ rlp ).inReplyToStatusId(status.getId()));
 
         return new String("Successfully updated the status to " + status.getText() );
 

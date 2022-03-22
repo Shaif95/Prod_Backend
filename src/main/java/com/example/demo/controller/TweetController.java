@@ -32,8 +32,13 @@ public class TweetController {
 	}
 
 	@GetMapping("/get_pop")
-	public List<Tweet> strTweets() throws TwitterException {
+	public List<Tweet> strrTweets() throws TwitterException {
 		return tweetService.fetchAccount();
+	}
+
+	@GetMapping("/get_user")
+	public List<Tweet> strTweets() throws TwitterException {
+		return tweetService.fetchAccountbyuser();
 	}
 
 
