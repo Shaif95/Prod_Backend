@@ -65,15 +65,9 @@ public class SchedulerTest {
 
         //System.out.println(now);
         Instant min_1 = now.plus(1,ChronoUnit.MINUTES);
-        Instant min_2 = now.plus(2,ChronoUnit.MINUTES);
-        Instant min_3 = now.plus(3,ChronoUnit.MINUTES);
-        Instant min_4 = now.plus(4,ChronoUnit.MINUTES);
 
         String date = now.toString().substring(2,19);
         String date1 = min_1.toString().substring(2,19);
-        String date2 = min_2.toString().substring(2,19);
-        String date3 = min_3.toString().substring(2,19);
-        String date4 = min_4.toString().substring(2,19);
 
         find(date,0);
 
@@ -108,7 +102,10 @@ public class SchedulerTest {
 
     // Engagement
 
-    @Scheduled(cron ="0 0 */6 * * ?")
+    //@Scheduled(cron ="0 */1 * * * ?")
+    //@Scheduled(cron ="0 0 */6 * * ?")
+
+    @Scheduled(cron ="0 0 */10 * * ?")
     public void name() throws TwitterException {
 
         System.out.println("every hour");
@@ -128,12 +125,6 @@ public class SchedulerTest {
         }
 
 
-        Instant now = Instant.now();
-        Instant yesterday = now.minus(1, ChronoUnit.DAYS);
-        //System.out.println(now);
-        String date = now.toString().substring(0,10);
-
-
 
         String[] accounts = {};
 
@@ -147,27 +138,29 @@ public class SchedulerTest {
             System.out.println(accounts[i]);
 
             Twitter twitter = twitterConfig.getTwitterInstance();
-            Query query = new Query("from:" + accounts[i]+  " +exclude:replies"+ " +exclude:retweets").since(date);
 
-            QueryResult result = twitter.search(query);
+            ArrayList<Status> result = new ArrayList<>();
 
-            for (Status status : result.getTweets()) {
+            result.addAll(twitter.getUserTimeline(accounts[i]));
 
+            for (Status status : result) {
 
-                Tweet tweet = Tweet.builder()
-                        .text(status.getText())
-                        .url_id(String.valueOf(status.getId()))
-                        .user(status.getUser().getScreenName())
-                        .userImage(status.getUser().getProfileImageURL())
-                        .niche("engage")
-                        .RtCount(status.getRetweetCount())
-                        .Fav_Count(status.getFavoriteCount())
-                        .tweetedAt(status.getCreatedAt())
-                        .build();
+                if(status.getText().startsWith("RT") != true ) {
 
-                tweets.add(tweet);
+                    Tweet tweet = Tweet.builder()
+                            .text(status.getText())
+                            .url_id(String.valueOf(status.getId()))
+                            .user(status.getUser().getScreenName())
+                            .userImage(status.getUser().getProfileImageURL())
+                            .niche("engage")
+                            .RtCount(status.getRetweetCount())
+                            .Fav_Count(status.getFavoriteCount())
+                            .tweetedAt(status.getCreatedAt())
+                            .build();
 
+                    tweets.add(tweet);
 
+                }
 
             }
         }
@@ -179,45 +172,39 @@ public class SchedulerTest {
 
     private void fetch(List<String> followSet, String id) throws TwitterException {
 
-        Instant now = Instant.now();
-        Instant yesterday = now.minus(2, ChronoUnit.DAYS);
-        //System.out.println(now);
-        String date = now.toString().substring(0,10);
-
-        String[] accounts = followSet.toArray(new String[followSet.size()]);
-
-        accounts = acs.split(",");
+        List<String> accounts = followSet;
 
 
         List<Tweet> tweets = new ArrayList<Tweet>();
 
-        for (int i =0;i<accounts.length;i++) {
+        for (int i = 0; i< accounts.size(); i++) {
 
-            System.out.println(accounts[i]);
+            System.out.println(accounts.get(i));
 
             Twitter twitter = twitterConfig.getTwitterInstance();
-            Query query = new Query("from:" + accounts[i]+ " +exclude:replies"+ " +exclude:retweets").since(date);
 
+            ArrayList<Status> result = new ArrayList<>();
 
-            QueryResult result = twitter.search(query);
+            result.addAll(twitter.getUserTimeline(accounts.get(i)));
 
-            for (Status status : result.getTweets()) {
+            for (Status status : result) {
 
+                if(status.getText().startsWith("RT") != true ) {
 
-                Tweet tweet = Tweet.builder()
-                        .text(status.getText().toString())
-                        .url_id(String.valueOf(status.getId()))
-                        .user(status.getUser().getScreenName())
-                        .userImage(status.getUser().getProfileImageURL())
-                        .niche(id+"engage")
-                        .RtCount(status.getRetweetCount())
-                        .Fav_Count(status.getFavoriteCount())
-                        .tweetedAt(status.getCreatedAt())
-                        .build();
+                    Tweet tweet = Tweet.builder()
+                            .text(status.getText().toString())
+                            .url_id(String.valueOf(status.getId()))
+                            .user(status.getUser().getScreenName())
+                            .userImage(status.getUser().getProfileImageURL())
+                            .niche(id + "engage")
+                            .RtCount(status.getRetweetCount())
+                            .Fav_Count(status.getFavoriteCount())
+                            .tweetedAt(status.getCreatedAt())
+                            .build();
 
-                tweets.add(tweet);
+                    tweets.add(tweet);
 
-
+                }
 
             }
         }
