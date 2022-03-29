@@ -101,7 +101,7 @@ public class LoginService {
             System.out.println(accounts[i]);
 
             Twitter twitter = twitterConfig.getTwitterInstance();
-            Query query = new Query("from:" + accounts[i]+ " +exclude:replies").since(date);
+            Query query = new Query("from:" + accounts[i]+ " +exclude:replies"+ " +exclude:retweets").since(date);
 
             query.setCount(1000);
 

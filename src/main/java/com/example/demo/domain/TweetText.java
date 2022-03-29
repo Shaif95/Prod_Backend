@@ -21,6 +21,7 @@ public class TweetText {
     private String userid;       //username
     private String text;      //description
     private TweetStatus status;
+    private String image;
     private  Long duration;
     private String date;
     private String time;
