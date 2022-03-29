@@ -125,49 +125,6 @@ public class SchedulerTest {
         }
 
 
-
-        String[] accounts = {};
-
-        accounts = acs.split(",");
-
-
-        List<Tweet> tweets = new ArrayList<Tweet>();
-
-        for (int i =0;i<accounts.length;i++) {
-
-            System.out.println(accounts[i]);
-
-            Twitter twitter = twitterConfig.getTwitterInstance();
-
-            ArrayList<Status> result = new ArrayList<>();
-
-            result.addAll(twitter.getUserTimeline(accounts[i]));
-
-            for (Status status : result) {
-
-                if(status.getText().startsWith("RT") != true ) {
-
-                    Tweet tweet = Tweet.builder()
-                            .text(status.getText())
-                            .url_id(String.valueOf(status.getId()))
-                            .user(status.getUser().getScreenName())
-                            .userImage(status.getUser().getProfileImageURL())
-                            .niche("engage")
-                            .RtCount(status.getRetweetCount())
-                            .Fav_Count(status.getFavoriteCount())
-                            .tweetedAt(status.getCreatedAt())
-                            .build();
-
-                    tweets.add(tweet);
-
-                }
-
-            }
-        }
-
-        Collections.shuffle(tweets);
-        tweetRepository.saveAll(tweets);
-
     }
 
     private void fetch(List<String> followSet, String id) throws TwitterException {
@@ -212,9 +169,6 @@ public class SchedulerTest {
         Collections.shuffle(tweets);
         tweetRepository.saveAll(tweets);
 
-
-
     }
-
 
 }
