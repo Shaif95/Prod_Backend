@@ -10,8 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST","PUT", "DELETE", "PATCH")
-				.allowedOrigins("https://tweety-foysalbn.herokuapp.com/", "https://app.tweetsy.io/","http://localhost:3000/");
+		registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST","PUT", "DELETE", "PATCH");
 	}
 	
 }

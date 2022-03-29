@@ -28,7 +28,7 @@ public class TweetController {
 
 	@GetMapping("/get_acc/{niche}")
 	public List<Tweet> fetchTweets(@PathVariable String niche) throws TwitterException, InterruptedException {
-		return tweetService.streamTweets(niche);
+		return tweetService.getTweets(niche);
 	}
 
 	@GetMapping("/get_pop")
@@ -84,6 +84,10 @@ public class TweetController {
 		return tweetService.changeCatById(id,cat);
 	}
 
+	@PutMapping("/image/{id}")
+	public Tweet getImageById(@PathVariable String id) throws TwitterException {
+		return tweetService.putImageByUser(id);
+	}
 
 
 }

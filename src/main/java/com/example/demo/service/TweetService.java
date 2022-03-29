@@ -52,7 +52,7 @@ public class TweetService {
 
 
 
-	public List<Tweet> streamTweets( String niche ) throws TwitterException, InterruptedException {
+	public List<Tweet> getTweets( String niche ) throws TwitterException, InterruptedException {
 
 		String[] accounts = {};
 
@@ -395,4 +395,29 @@ public class TweetService {
 
 		}
 
+	public Tweet putImageByUser(String name) throws TwitterException {
+
+		String image = "";
+
+		Tweet t = tweetRepository.findById(name).get();
+		String profname = t.getUser();
+
+		Twitter twitter = twitterConfig.getTwitterInstance();
+		Query query = new Query( "from:" + profname + " +exclude:retweets" );
+		QueryResult result = twitter.search(query);
+		query.setCount(1);
+
+		for (Status status : result.getTweets()) {
+
+
+			image = status.getUser().getProfileImageURL();
+
+
+		}
+
+		t.setUserImage(image);
+
+		return  tweetRepository.save(t);
+
+	}
 }
