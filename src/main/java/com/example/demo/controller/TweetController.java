@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "https://tweetsy-frontend.herokuapp.com/")
 @RequestMapping("/tweets")
 public class TweetController {
 
@@ -36,9 +35,9 @@ public class TweetController {
 		return tweetService.fetchAccount();
 	}
 
-	@GetMapping("/get_user")
-	public List<Tweet> strTweets() throws TwitterException {
-		return tweetService.fetchAccountbyuser();
+	@GetMapping("/get_user/{name}")
+	public List<Tweet> strTweets(@PathVariable String name) throws TwitterException {
+		return tweetService.fetchAccountbyuser(name);
 	}
 
 

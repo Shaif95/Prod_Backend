@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "https://tweetsy-frontend.herokuapp.com/")
 @RequestMapping("/TweetText")
 public class TweetTextController {
 

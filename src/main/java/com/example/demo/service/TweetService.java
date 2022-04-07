@@ -96,10 +96,10 @@ public class TweetService {
 				//System.out.println(status.getText());
 
 
-				if (tweet.getRtCount() > 5) {
+				if (tweet.getRtCount() > 30) {
 					tweets.add(tweet);
 				}
-				else if (tweet.getFav_Count() > 5) {
+				else if (tweet.getFav_Count() > 30) {
 					tweets.add(tweet);
 				}
 
@@ -183,10 +183,10 @@ public class TweetService {
 							.build();
 
 
-					if (tweet.getRtCount() > 5) {
+					if (tweet.getRtCount() > 30) {
 						tweets.add(tweet);
 					}
-					else if (tweet.getFav_Count() > 5) {
+					else if (tweet.getFav_Count() > 30) {
 						tweets.add(tweet);
 					}
 
@@ -272,7 +272,7 @@ public class TweetService {
 	}
 
 
-	public List<Tweet> fetchAccountbyuser(  ) throws TwitterException {
+	public List<Tweet> fetchAccountbyuser( String name ) throws TwitterException {
 
 
 		Instant now = Instant.now();
@@ -284,7 +284,7 @@ public class TweetService {
 
 		Paging pg = new Paging();
 
-		String userName = "VittoStack";
+		String userName = name;
 
 		//String userName = "324342432fsdfhui78ds";
 
@@ -320,7 +320,7 @@ public class TweetService {
 						.url_id(String.valueOf(status.getId()))
 						.user(status.getUser().getScreenName())
 						.userImage(status.getUser().getProfileImageURL())
-						.niche("Volume2")
+						.niche("Volume1")
 						.RtCount(status.getRetweetCount())
 						.Fav_Count(status.getFavoriteCount())
 						.tweetedAt(status.getCreatedAt())
@@ -328,10 +328,10 @@ public class TweetService {
 
 				//System.out.println(status.getText());
 
-				if (tweet.getRtCount() > 5) {
+				if (tweet.getRtCount() > 30) {
 					neededtweets.add(tweet);
 				}
-				else if (tweet.getFav_Count() > 5) {
+				else if (tweet.getFav_Count() > 30) {
 					neededtweets.add(tweet);
 				}
 

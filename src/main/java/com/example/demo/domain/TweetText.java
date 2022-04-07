@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Timer;
 
 @Data
@@ -21,7 +22,7 @@ public class TweetText {
     private String userid;       //username
     private String text;      //description
     private TweetStatus status;
-    private String image;
+    private List<String> image;
     private  Long duration;
     private String date;
     private String time;

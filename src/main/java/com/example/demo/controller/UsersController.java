@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "https://tweetsy-frontend.herokuapp.com/")
 @RequestMapping("/users")
 public class UsersController {
 
