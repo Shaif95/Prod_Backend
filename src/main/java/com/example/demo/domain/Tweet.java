@@ -8,8 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import twitter4j.MediaEntity;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -38,4 +40,7 @@ public class Tweet {
 	private Date tweetedAt;
 
 	private String userImage;
+
+	private List<MediaEntity> media;
+
 }

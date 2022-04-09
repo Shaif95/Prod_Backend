@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -91,7 +92,7 @@ public class SchedulerTest {
 
             TweetText t = tweets.get(i);
 
-            userService.post(t.getUserid(),t.getText());
+            userService.post(t.getUserid(),t.getText(),t.getImage());
 
             t.setStatus(TweetStatus.SENT);
 
@@ -105,7 +106,7 @@ public class SchedulerTest {
     //@Scheduled(cron ="0 */1 * * * ?")
     //@Scheduled(cron ="0 0 */6 * * ?")
 
-    @Scheduled(cron ="0 0 */6 * * ?")
+    @Scheduled(cron ="0 0 */4 * * ?")
     public void name() throws TwitterException {
 
         System.out.println("every hour");
@@ -146,7 +147,7 @@ public class SchedulerTest {
 
             for (Status status : result) {
 
-                if(status.getText().startsWith("RT") != true ) {
+                if(status.getText().startsWith("RT") != true && status.getText().startsWith("@") != true  ) {
 
                     Tweet tweet = Tweet.builder()
                             .text(status.getText().toString())
@@ -157,6 +158,7 @@ public class SchedulerTest {
                             .RtCount(status.getRetweetCount())
                             .Fav_Count(status.getFavoriteCount())
                             .tweetedAt(status.getCreatedAt())
+                            .media(Arrays.asList(status.getMediaEntities()))
                             .build();
 
                     tweets.add(tweet);

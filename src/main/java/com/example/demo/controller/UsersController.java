@@ -60,8 +60,8 @@ public class UsersController {
     }
 
     @PostMapping("/tweet/{id}/{tweet}")
-    public String post (@PathVariable String id, @PathVariable String tweet) throws ServletException, IOException, TwitterException {
-        return userService.post(id,tweet);
+    public String post (@PathVariable String id, @PathVariable String tweet, @RequestBody List<String> image) throws ServletException, IOException, TwitterException {
+        return userService.post(id,tweet,image);
     }
 
     @PostMapping("/reply/{id}/{tweetid}")
