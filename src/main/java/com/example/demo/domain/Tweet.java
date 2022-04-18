@@ -42,5 +42,4 @@ public class Tweet {
 	private String userImage;
 
 	private List<MediaEntity> media;
-
 }

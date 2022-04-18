@@ -92,7 +92,7 @@ public class SchedulerTest {
 
             TweetText t = tweets.get(i);
 
-            userService.post(t.getUserid(),t.getText(),t.getImage());
+            userService.post(t.getUserid(),t.getText());
 
             t.setStatus(TweetStatus.SENT);
 
@@ -147,7 +147,7 @@ public class SchedulerTest {
 
             for (Status status : result) {
 
-                if(status.getText().startsWith("RT") != true && status.getText().startsWith("@") != true  ) {
+                if(status.getText().startsWith("RT") != true && status.getText().startsWith("@") != true ) {
 
                     Tweet tweet = Tweet.builder()
                             .text(status.getText().toString())

@@ -231,43 +231,43 @@ public class TweetService {
 					if(t.getId() < lastID) lastID = t.getId();
 			}
 			catch (TwitterException te) {
-				System.out.println("Error");
+			System.out.println("Error");
 			};
 			pg.setMaxId(lastID-1);
 		}
 
 
-		//query.setCount(50);
+			//query.setCount(50);
 
-		for (Status status : tweets) {
+			for (Status status : tweets) {
 
-			if(status.getText().startsWith("RT") == true && status.getText().startsWith("@") != true  ) {
-				String te = status.getText();
+				if(status.getText().startsWith("RT") == true && status.getText().startsWith("RT") != true) {
+					String te = status.getText();
 
-				Integer st = te.indexOf("@");
+					Integer st = te.indexOf("@");
 
-				Integer end = te.indexOf(":");
+					Integer end = te.indexOf(":");
 
-				String username = te.substring(st + 1, end);
+					String username = te.substring(st + 1, end);
 
-				Tweet tweet = Tweet.builder()
-						.text(te.substring(end+1, te.length()))
-						.searchtext(te.substring(end+1, te.length()))
-						.url_id(String.valueOf(status.getId()))
-						.user(username)
-						.userImage(getImageByUser(username))
-						.niche("Volume1")
-						.RtCount(status.getRetweetCount())
-						.Fav_Count(status.getFavoriteCount())
-						.tweetedAt(status.getCreatedAt())
-						.media(Arrays.asList(status.getMediaEntities()))
-						.build();
+					Tweet tweet = Tweet.builder()
+							.text(te.substring(end+1, te.length()))
+							.searchtext(te.substring(end+1, te.length()))
+							.url_id(String.valueOf(status.getId()))
+							.user(username)
+							.userImage(getImageByUser(username))
+							.niche("Volume1")
+							.RtCount(status.getRetweetCount())
+							.Fav_Count(status.getFavoriteCount())
+							.tweetedAt(status.getCreatedAt())
+							.media(Arrays.asList(status.getMediaEntities()))
+							.build();
 
-				//System.out.println(status.getText());
+					//System.out.println(status.getText());
 
-				neededtweets.add(tweet);
+					neededtweets.add(tweet);
 
-			}
+				}
 		}
 
 		return tweetRepository.saveAll(neededtweets);
@@ -314,7 +314,7 @@ public class TweetService {
 
 		for (Status status : tweets) {
 
-			if(status.getText().startsWith("RT") != true && status.getText().startsWith("@") != true  ) {
+			if(status.getText().startsWith("RT") != true && status.getText().startsWith("RT") != true ) {
 
 
 				Tweet tweet = Tweet.builder()
@@ -397,7 +397,7 @@ public class TweetService {
 
 		return image;
 
-	}
+		}
 
 	public Tweet putImageByUser(String name) throws TwitterException {
 
@@ -409,7 +409,7 @@ public class TweetService {
 		Twitter twitter = twitterConfig.getTwitterInstance();
 		Query query = new Query( "from:" + profname + " +exclude:retweets" );
 		QueryResult result = twitter.search(query);
-		query.setCount(2);
+		query.setCount(1);
 
 		for (Status status : result.getTweets()) {
 

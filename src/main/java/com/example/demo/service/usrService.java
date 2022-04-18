@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -139,7 +138,7 @@ public class usrService {
 
 
 
-    public String post(String id, String tweet, List<String> image ) throws IOException, ServletException, TwitterException {
+    public String post(String id, String tweet) throws IOException, ServletException, TwitterException {
 
         User user = userRepository.findById(id).get();
 
@@ -154,21 +153,9 @@ public class usrService {
 
         Twitter twitter = twitterFactory.getInstance();
 
-        String statusMessage = tweet;
+        Status status = twitter.updateStatus(tweet);
 
-        StatusUpdate status = new StatusUpdate(statusMessage);
-
-        if (image.size()!=0)
-        {
-            for(int j =0; j <image.size();j++)
-            {
-                status.setMedia(new File(image.get(j)));
-            }
-        }
-
-        twitter.updateStatus(status);
-
-        return new String("Successfully updated the status to " + status.getStatus());
+        return new String("Successfully updated the status to " + status.getText() );
 
     }
 

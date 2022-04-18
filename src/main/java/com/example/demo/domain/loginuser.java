@@ -31,6 +31,9 @@ public class loginuser {
     private String trial;
     private String sub_type;
 
+    private long plan_id;
+    private String cancel_id;
+
     private List<String> nicheSet;
 
     private List<String> userSet;
