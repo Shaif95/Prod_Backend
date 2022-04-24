@@ -32,7 +32,7 @@ public class loginuser {
     private String sub_type;
 
     private long plan_id;
-    private String cancel_id;
+    private String cancel_url;
 
     private List<String> nicheSet;
 

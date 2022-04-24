@@ -125,6 +125,54 @@ public class SchedulerTest {
             }
         }
 
+        String ll [] = acs.split(",");
+        List<String> accounts = new ArrayList<>();
+
+        for(int i =0;i<acs.length();i++)
+        {
+            accounts.add(ll[i]);
+        }
+
+
+        List<Tweet> tweets = new ArrayList<Tweet>();
+
+        for (int i = 0; i< accounts.size(); i++) {
+
+            System.out.println(accounts.get(i));
+
+            Twitter twitter = twitterConfig.getTwitterInstance();
+
+            ArrayList<Status> result = new ArrayList<>();
+
+            result.addAll(twitter.getUserTimeline(accounts.get(i)));
+
+            for (Status status : result) {
+
+                if(status.getText().startsWith("RT") != true && status.getText().startsWith("@") != true ) {
+
+                    Tweet tweet = Tweet.builder()
+                            .text(status.getText().toString())
+                            .url_id(String.valueOf(status.getId()))
+                            .user(status.getUser().getScreenName())
+                            .userImage(status.getUser().getProfileImageURL())
+                            .niche("engage")
+                            .RtCount(status.getRetweetCount())
+                            .Fav_Count(status.getFavoriteCount())
+                            .tweetedAt(status.getCreatedAt())
+                            .media(Arrays.asList(status.getMediaEntities()))
+                            .build();
+
+                    tweets.add(tweet);
+
+                }
+
+            }
+        }
+
+        Collections.shuffle(tweets);
+        tweetRepository.saveAll(tweets);
+
+
 
     }
 
